@@ -18,7 +18,7 @@ TARGET_DIR = "../datasets/wav"
 METADATA_DIR = "../datasets/metadata"
 MIN_DURATION = 5 * 60
 MAX_DURATION = 15 * 60
-SAMPLE_RATE = 16000  # LibriSpeech sample rate is 16kHz
+SAMPLE_RATE = 16000  # LibriSpeech sample rate is 16kHz (16000 samples per second), not seconds
 
 def ensure_target_dirs():
     """Ensure the target directories exist."""

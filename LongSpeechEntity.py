@@ -1,9 +1,11 @@
+from abc import ABC, abstractmethod
 from pathlib import Path
 from typing import List, Union
 import json
 import numpy as np
 import librosa
 import soundfile as sf
+import random
 
 
 class LongSpeechEntity:
@@ -15,13 +17,24 @@ class LongSpeechEntity:
     dataset metadata
     """
     AVG_DURATION = 600 # 10min = 600s
-    SAMPLE_RATE = 16000
+    SAMPLE_RATE = 16000  # 16kHz (16000 samples per second), not seconds
     OUT_DIR = '../datasets/LongSpeech'
 
 
+    @property
+    @abstractmethod
+    def AUDIO_AUTO(self) -> str:
+        raise NotImplementedError
 
 
-    def __init__(self, id, ds):
+    @property
+    @abstractmethod
+    def TEST_AUTO(self) -> str:
+        raise NotImplementedError
+
+
+
+    def __init__(self, id=None, ds=None):
         """
         Args:
             id: accending sequence_number
@@ -30,96 +43,58 @@ class LongSpeechEntity:
         # appendable numpy array
         self.audio_list = []
         self.duration_sec = 0
-        self.components = []
+        self.components = [] # 原始文件的filename
         self.transcribe = ""
-        self.id = id
+        self.id = id # accending sequence_number
         self.source_ds = ds
 
-    def append(self, other_list, transcribe):
+
+    def get_metadata(self):
         """
-        根据不同的策略追加，认为已经重采样到了目标采样率
+        Returns metadata in jsonl format.
+        """
+        metadata = {
+            "id": self.id,
+            "source_ds": self.source_ds,
+            "duration_sec": self.duration_sec,
+            "components": self.components,
+            "transcribe": self.transcribe,
+            "audio_auto": self.AUDIO_AUTO,
+            "test_auto": self.TEST_AUTO,
+        }
+        return json.dumps(metadata)
+
+
+    def export_wav(self):
+        """
+        Export the concatenated audio to a wav file.
         """
 
+        concatenated = np.concatenate(self.audio_list)
+        output_path = f"{self.OUT_DIR}/wavs/{self.id}.wav"
+        sf.write(output_path, concatenated, self.SAMPLE_RATE)
+        return output_path
 
-
-
-    def append_from_dataset_row(
-        self,
-        row: dict,
-        file_key: str = "audio",
-        to_path: bool = True,
-    ):
+    def appendaudio(self, audio_data, transcribe, path):
         """
-        从 Hugging Face / 自建数据集的一行记录追加片段。
+        Append audio data to the entity.
 
         Args:
-            row: 单行样本（dict）
-            file_key: 行中指向音频文件或嵌入对象的键
-            to_path: 若 row[file_key] 已是类文件对象，设为 False
+            audio_data: The audio data to append,
+            it's assumed to be a list and already sampled to target sr
         """
-        if to_path:
-            # row[file_key] 是路径或 datasets.Audio 对象
-            path = Path(row[file_key]).expanduser().resolve()
-            self.append_wav(path)
-        else:
-            # row[file_key] 已经是 ndarray / list / bytes
-            audio = np.asarray(row[file_key], dtype=np.float32)
-            if len(audio.shape) > 1:  # 立体声转单声道
-                audio = librosa.to_mono(audio.T)
-            if row.get("sampling_rate") and row["sampling_rate"] != self.target_sr:
-                audio = librosa.resample(audio, orig_sr=row["sampling_rate"], target_sr=self.target_sr)
-            self._segments.append(audio)
-            self._segment_files.append(f"<inline>{row.get('id', len(self._segment_files))}")
 
-    # -------- 导出 --------
-    def export_wav(self, out_path: Union[str, Path]):
-        """
-        将所有片段拼接后保存成 WAV。
-        """
-        out_path = Path(out_path).expanduser().resolve()
-        audio_concat = np.concatenate(self._segments) if self._segments else np.array([], dtype=np.float32)
-        sf.write(out_path, audio_concat, self.target_sr)
-        return out_path
+        # Sample rate is in Hz (samples per second), not in seconds
+        # To calculate duration in seconds, divide the number of samples by the sample rate
+        cur_dur = len(audio_data) / self.SAMPLE_RATE
+        if self.duration_sec >= self.AVG_DURATION:
+            # get a random number [0, 1] to decide whether to append
+            if random.random() < 0.5:
+                return False
+            self.duration_sec += cur_dur
+            self.audio_list.append(audio_data)
+            self.components.append(path)
+            self.transcribe += " " + transcribe
 
-    def dump_metadata(self, jsonl_path: Union[str, Path]):
-        """
-        导出元数据（仅自身信息 + file_name 列表）到 JSONL：
-            第 1 行：整体信息
-            后续行：{"file_name": "..."}
-        """
-        jsonl_path = Path(jsonl_path).expanduser().resolve()
-        meta = {
-            "target_sr": self.target_sr,
-            "num_segments": len(self._segments),
-            "total_samples": int(sum(len(a) for a in self._segments)),
-        }
-        with jsonl_path.open("w", encoding="utf-8") as f:
-            f.write(json.dumps(meta, ensure_ascii=False) + "\n")
-            for file_name in self._segment_files:
-                f.write(json.dumps({"file_name": file_name}, ensure_ascii=False) + "\n")
-        return jsonl_path
+        return True
 
-    # -------- 便捷属性 --------
-    @property
-    def duration_sec(self) -> float:
-        """返回当前拼接后总时长（秒）。"""
-        return sum(len(a) for a in self._segments) / self.target_sr
-
-    @property
-    def segment_files(self) -> List[str]:
-        """只读：已追加的片段文件名列表。"""
-        return self._segment_files.copy()
-
-    @duration_sec.setter
-    def duration_sec(self, value):
-        self._duration_sec = value
-
-
-if __name__ == "__main__":
-    # 简单示例：将两个本地 wav 拼接
-    lse = LongSpeechEntity(target_sr=16_000)
-    lse.append_wav("clip1.wav")
-    lse.append_wav("clip2.wav")
-    wav_out = lse.export_wav("combined.wav")
-    meta_out = lse.dump_metadata("combined_meta.jsonl")
-    print(f"拼接完成，WAV -> {wav_out}, 元数据 -> {meta_out}, 总时长 {lse.duration_sec:.1f}s")
