@@ -1,9 +1,6 @@
 from abc import ABC, abstractmethod
-from pathlib import Path
-from typing import List, Union
 import json
 import numpy as np
-import librosa
 import soundfile as sf
 import random
 
@@ -47,6 +44,7 @@ class LongSpeechEntity:
         self.transcribe = ""
         self.id = id # accending sequence_number
         self.source_ds = ds
+        self.finished = False
 
 
     def get_metadata(self):
@@ -71,7 +69,7 @@ class LongSpeechEntity:
         """
 
         concatenated = np.concatenate(self.audio_list)
-        output_path = f"{self.OUT_DIR}/wavs/{self.id}.wav"
+        output_path = f"{self.OUT_DIR}/wavs/{self.id:06d}.wav"
         sf.write(output_path, concatenated, self.SAMPLE_RATE)
         return output_path
 
@@ -90,6 +88,7 @@ class LongSpeechEntity:
         if self.duration_sec >= self.AVG_DURATION:
             # get a random number [0, 1] to decide whether to append
             if random.random() < 0.5:
+                self.finished = True
                 return False
             self.duration_sec += cur_dur
             self.audio_list.append(audio_data)
