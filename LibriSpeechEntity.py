@@ -22,5 +22,6 @@ class LibriSpeechEntity(LongSpeechEntity):
         super().__init__(id, "LibriSpeech")
 
     def appendaudio(self, audio_data, transcribe, path):
+        print("LibriSpeechEntity.appendaudio")
         transcribe = restore_punctuation(transcribe)
         super().appendaudio(audio_data, transcribe, path)
