@@ -2,6 +2,9 @@ from lhotse import CutSet
 from lhotse.recipes import prepare_librispeech
 from lhotse.cut import append_cuts
 import json
+import os
+import tqdm
+
 
 def from_strategy_to_cuts(source_cuts, strategy: list):
     """
@@ -33,6 +36,14 @@ def jsonl_head(jsonl_path, n=10):
             f.write(json.dumps(line, ensure_ascii=False) + '\n')
     return output_path
 
+
+
+def save_audios_from_cutset(cutset, out_dir, num_jobs=1):
+    """
+    Save audios from a CutSet to the specified directory.
+    """
+    for cut in tqdm(cutset):
+        cut.save_audio(os.path.join(out_dir, f"{cut.id}.wav"))
 if __name__ == '__main__':
     json_path = "../datasets/LongSpeech/raw_cuts.jsonl"
     print(jsonl_head(json_path, 10))
