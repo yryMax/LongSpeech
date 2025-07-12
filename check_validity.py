@@ -44,4 +44,4 @@ def roll_back(folder):
 
 if __name__ == '__main__':
     check_validity('../datasets/LongSpeech')
-    # roll_back('../datasets/LongSpeech')
+    #roll_back('../datasets/LongSpeech')
