@@ -5,10 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="602cfb8d-0cbe-47b8-9945-3a1bd48e65fa" name="Changes" comment="trash">
+      <change afterPath="$PROJECT_DIR$/mylhotse/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mylhotse/voxpopuli.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/_head.jsonl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lhotse_util.py" beforeDir="false" afterPath="$PROJECT_DIR$/lhotse_util.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/processing_tedlium.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/processing_tedlium.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prcessing_voxpopuli.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/prcessing_voxpopuli.ipynb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,7 +59,7 @@
     "git-widget-placeholder": "main",
     "ignore.virus.scanning.warn.message": "true",
     "junie.onboarding.icon.badge.shown": "true",
-    "last_opened_file_path": "D:/repo/LongSpeech",
+    "last_opened_file_path": "D:/repo/LongSpeech/mylhotse",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
