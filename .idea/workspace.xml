@@ -5,8 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="602cfb8d-0cbe-47b8-9945-3a1bd48e65fa" name="Changes" comment="trash">
-      <change afterPath="$PROJECT_DIR$/mylhotse/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mylhotse/voxpopuli.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/prcessing_voxpopuli.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/prcessing_voxpopuli.ipynb" afterDir="false" />
     </list>
@@ -71,6 +69,7 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\repo\LongSpeech\mylhotse" />
       <recent name="D:\repo\LongSpeech" />
     </key>
   </component>
