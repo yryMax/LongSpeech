@@ -8,15 +8,32 @@ def check_validity(folder):
     amount_ideal = json.load(open(folder + '/metadata.json'))['amount']
     amount_wavs = len(os.listdir(folder + '/wavs'))
 
-    # Check if each line in all_audios.jsonl is a valid JSON
+    # Check if each line in all_audios.jsonl is a valid JSON and IDs fill the range [0, amount_ideal)
     valid_json_count = 0
+    seen_ids = set()
     with open(os.path.join(folder, 'all_audios.jsonl'), 'r', encoding='utf-8') as f:
         for line_num, line in enumerate(f, 1):
             try:
-                json.loads(line)
+                json_obj = json.loads(line)
                 valid_json_count += 1
+
+                # Check if the ID is in the valid range
+                json_id = int(json_obj['id'])
+                if json_id < 0 or json_id >= amount_ideal:
+                    raise AssertionError(f"JSON at line {line_num} has ID {json_id} which is outside the valid range [0, {amount_ideal})")
+
+                # Check for duplicate IDs
+                if json_id in seen_ids:
+                    raise AssertionError(f"Duplicate ID {json_id} found at line {line_num}")
+
+                seen_ids.add(json_id)
             except json.JSONDecodeError:
                 raise AssertionError(f"Invalid JSON at line {line_num} in all_audios.jsonl")
+
+    # Check if all IDs in the range [0, amount_ideal) are present
+    missing_ids = set(range(amount_ideal)) - seen_ids
+    if missing_ids:
+        raise AssertionError(f"Missing IDs in the range [0, {amount_ideal}): {missing_ids}")
 
     amount_manifacts = valid_json_count
     assert amount_ideal == amount_wavs == amount_manifacts, f'length wrong {amount_ideal} != {amount_wavs} != {amount_manifacts}'
