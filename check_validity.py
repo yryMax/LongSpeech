@@ -1,6 +1,7 @@
 import json
 import os
 import shutil
+import argparse
 
 def check_validity(folder):
     # check if the the number of wavs files is equal to the number of txt files also the metadata
@@ -12,7 +13,7 @@ def check_validity(folder):
     #检查每一条seq number对应的wav都存在
     for i in range(amount_ideal):
         assert os.path.exists(os.path.join(folder, 'wavs', f'{i:06d}.wav')), f'{i:06d}.wav not found'
-    
+
     print('All good!')
 
 def roll_back(folder):
@@ -23,25 +24,37 @@ def roll_back(folder):
     # delete all the wavs that larger than this amount
     for i in range(amount_ideal, amount_wavs):
         os.remove(os.path.join(folder, 'wavs', f'{i:06d}.wav'))
-    
+
     # delete all the manifests that larger than this amount
     manifest_path = os.path.join(folder, 'all_audios.jsonl')
     temp_manifest_path = os.path.join(folder, 'tmp_all_audios.jsonl')
     print(f"Filtering manifest file: {manifest_path}")
     with open(manifest_path, 'r', encoding='utf-8') as infile, \
             open(temp_manifest_path, 'w', encoding='utf-8') as outfile:
-        
+
         for line in infile:
             # Keep the line only if the sequence number is LESS THAN the ideal amount
             item = json.loads(line)
             if int(item.get('id')) < amount_ideal:
                 outfile.write(line)
-    
+
     # Replace the original file with the filtered temporary file
     shutil.move(temp_manifest_path, manifest_path)
 
 
 
 if __name__ == '__main__':
-    check_validity('../datasets/LongSpeech')
-    #roll_back('../datasets/LongSpeech')
+
+
+    parser = argparse.ArgumentParser(description="对数据集执行检查或回滚操作。")
+    parser.add_argument(
+        'action',
+        type=str,
+        choices=['check', 'rollback'],
+        help='要执行的操作: "check" 调用 check_validity, "rollback" 调用 roll_back'
+    )
+    args = parser.parse_args()
+    if args.action == 'check':
+        check_validity('../datasets/LongSpeech')
+    elif args.action == 'rollback':
+        roll_back('../datasets/LongSpeech')

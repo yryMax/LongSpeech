@@ -6,6 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="602cfb8d-0cbe-47b8-9945-3a1bd48e65fa" name="Changes" comment="trash">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/check_validity.py" beforeDir="false" afterPath="$PROJECT_DIR$/check_validity.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/prcessing_commonvoice.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/prcessing_commonvoice.ipynb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -229,7 +230,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="jupyter-line">
           <url>file://$PROJECT_DIR$/prcessing_commonvoice.ipynb</url>
-          <line>295</line>
+          <line>297</line>
           <option name="timeStamp" value="6" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
