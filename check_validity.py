@@ -79,10 +79,9 @@ if __name__ == '__main__':
         'action',
         type=str,
         choices=['check', 'rollback'],
-        help='要执行的操作: "check" 调用 check_validity, "rollback" 调用 roll_back'
     )
     args = parser.parse_args()
     if args.action == 'check':
-        check_validity('../datasets/LongSpeech')
+        check_validity('../datasets/LongSpeech_p2')
     elif args.action == 'rollback':
-        roll_back('../datasets/LongSpeech')
+        roll_back('../datasets/LongSpeech_p2')
