@@ -7,9 +7,20 @@ def check_validity(folder):
     # check if the the number of wavs files is equal to the number of txt files also the metadata
     amount_ideal = json.load(open(folder + '/metadata.json'))['amount']
     amount_wavs = len(os.listdir(folder + '/wavs'))
+
+    # Check if each line in all_audios.jsonl is a valid JSON
+    valid_json_count = 0
     with open(os.path.join(folder, 'all_audios.jsonl'), 'r', encoding='utf-8') as f:
-        amount_manifacts = sum(1 for line in f)
+        for line_num, line in enumerate(f, 1):
+            try:
+                json.loads(line)
+                valid_json_count += 1
+            except json.JSONDecodeError:
+                raise AssertionError(f"Invalid JSON at line {line_num} in all_audios.jsonl")
+
+    amount_manifacts = valid_json_count
     assert amount_ideal == amount_wavs == amount_manifacts, f'length wrong {amount_ideal} != {amount_wavs} != {amount_manifacts}'
+
     #检查每一条seq number对应的wav都存在
     for i in range(amount_ideal):
         assert os.path.exists(os.path.join(folder, 'wavs', f'{i:06d}.wav')), f'{i:06d}.wav not found'
