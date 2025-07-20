@@ -80,8 +80,21 @@ if __name__ == '__main__':
         type=str,
         choices=['check', 'rollback'],
     )
+    parser.add_argument(
+    'path',
+    type=str,
+    help="目标数据集的路径。"
+    )
+
     args = parser.parse_args()
-    if args.action == 'check':
-        check_validity('../datasets/LongSpeech_p2')
-    elif args.action == 'rollback':
-        roll_back('../datasets/LongSpeech_p2')
+
+    dataset_path = args.path
+
+    if not os.path.isdir(dataset_path):
+        print(f"wrong path")
+    else:
+        if args.action == 'check':
+            check_validity(dataset_path)
+        elif args.action == 'rollback':
+            roll_back(dataset_path)
+    
