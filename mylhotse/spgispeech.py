@@ -88,7 +88,7 @@ def prepare_spgispeech(
     assert corpus_dir.is_dir(), f"No such directory: {corpus_dir}"
 
     audio_dir = corpus_dir
-    dataset_parts = ["val"]
+    dataset_parts = ["train","val"]
     manifests = {}
 
     output_dir = Path(output_dir)
