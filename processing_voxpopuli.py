@@ -105,15 +105,15 @@ if __name__ == '__main__':
             ss = manifests[part]['supervisions']
             cut = CutSet.from_manifests(recordings=rs, supervisions=ss)
             cuts += cut
-            spilted_cuts = cuts.trim_to_supervision_groups(max_pause=5).filter(lambda cut: cut.duration > 10).sort_by_recording_id().merge_supervisions(merge_policy="keep_first")
-            grouped_cuts, new_amount = pack_cuts_to_long_audio(spilted_cuts, target_duration=600.0, starting_id = prev_amount)
-            grouped_cuts.to_jsonl(OUT_DIR + "/grouped_cuts.jsonl")
-            convert_record(os.path.join(OUT_DIR, "grouped_cuts.jsonl"),
-                        os.path.join(OUT_DIR, OUT_FILE_NAME),
-                        json_from_voxpopuli_to_allaudios, lang)
-            save_audios_from_cutset(grouped_cuts, os.path.join(OUT_DIR, 'wavs'))
-            print(f"Total amount: {new_amount}")
-            prev_amount = new_amount
+        spilted_cuts = cuts.trim_to_supervision_groups(max_pause=5).filter(lambda cut: cut.duration > 10).sort_by_recording_id().merge_supervisions(merge_policy="keep_first")
+        grouped_cuts, new_amount = pack_cuts_to_long_audio(spilted_cuts, target_duration=600.0, starting_id = prev_amount)
+        grouped_cuts.to_jsonl(OUT_DIR + "/grouped_cuts.jsonl")
+        convert_record(os.path.join(OUT_DIR, "grouped_cuts.jsonl"),
+                    os.path.join(OUT_DIR, OUT_FILE_NAME),
+                    json_from_voxpopuli_to_allaudios, lang)
+        save_audios_from_cutset(grouped_cuts, os.path.join(OUT_DIR, 'wavs'))
+        print(f"Total amount: {new_amount}")
+        prev_amount = new_amount
 
 
 

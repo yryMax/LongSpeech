@@ -3,7 +3,7 @@ import json
 import shutil
 import argparse
 import wave
-
+from tqdm.auto import tqdm
 class DatasetValidator:
     """
     A class to check the validity of a dataset or roll it back to a clean state.
@@ -42,7 +42,7 @@ class DatasetValidator:
             'text_auto': bool,
             'num_speakers': int,
             'num_switches': int,
-            'lang': str,
+            'language': str,
             'slice': list,
             'transcribe': str,
             'components': list
@@ -73,7 +73,8 @@ class DatasetValidator:
 
         # 3. Perform more detailed format validation
         # 'slice': must be a list of lists, each with two numbers
-        if not all(isinstance(s, list) and len(s) == 2 and all(isinstance(x, (float, float)) for x in s) for s in record['slice']):
+        if not all(isinstance(s, list) and len(s) == 2 for s in record['slice']):
+            #print(record['slice'])
             raise AssertionError(f"Invalid format for 'slice' at line {line_num}. "
                                  f"Expected a list of [number, number] pairs.")
 
@@ -146,20 +147,22 @@ class DatasetValidator:
         Return:
             [str]: List of id to be fixed.
         """
+        print("qwq")
         ill_wavs = []
         with open(self.metadata_path, 'r', encoding='utf-8') as f:
             amount_ideal = json.load(f)['amount']
-        for i in range(amount_ideal):
+        for i in tqdm(range(amount_ideal)):
             wav_file = os.path.join(self.wavs_path, f'{i:06d}.wav')
             assert os.path.exists(wav_file), f'{wav_file} not found.'
             try:
                 with wave.open(wav_file, 'rb') as f:
                     f.readframes(1)
-            except wave.Error as e:
+            except (wave.Error, EOFError) as e:
                 print(f"Error reading {wav_file}: {e}")
                 ill_wavs.append(f'{i:06d}')
 
         return ill_wavs
+
 
 
     def rollback(self):
@@ -211,7 +214,7 @@ if __name__ == '__main__':
     parser.add_argument(
         'action',
         type=str,
-        choices=['check', 'rollback'],
+        choices=['check', 'rollback', "wav"],
         help="The action to perform: 'check' for enhanced validation or 'rollback'."
     )
     parser.add_argument(
@@ -228,5 +231,8 @@ if __name__ == '__main__':
             validator.check_validity_manifact()
         elif args.action == 'rollback':
             validator.rollback()
+        elif args.action == 'wav':
+            print(validator.get_ill_waveforms())
+
     except (FileNotFoundError, AssertionError) as e:
         print(f"\n❌ ERROR: {e}")
