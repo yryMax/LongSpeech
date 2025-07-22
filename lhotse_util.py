@@ -4,7 +4,6 @@ from lhotse.cut import append_cuts
 import json
 import os
 import tqdm
-from speechbrain.pretrained import EncoderClassifier
 from lhotse.features import FeatureExtractor
 from lhotse.utils import Seconds
 import torchaudio
@@ -55,22 +54,18 @@ def save_audios_from_cutset(cutset, out_dir, num_jobs=1):
 
 
 
-
-
+"""
+from speechbrain.pretrained import EncoderClassifier
 @dataclass
 class SpeakerEmbeddingConfig:
-    """
-    Configuration for the SpeakerEmbeddingExtractor.
-    """
+
     device: str = "cpu"
     feature_dim: int = 192
     model_source: str = "speechbrain/spkrec-ecapa-voxceleb"
 
 
 class SpeakerEmbeddingExtractor(FeatureExtractor):
-    """
-    一个使用 SpeechBrain 预训练模型提取 Speaker Embedding 的特征提取器。
-    """
+
     name = "speaker_embedding"
     config_type = SpeakerEmbeddingConfig
 
@@ -101,13 +96,12 @@ class SpeakerEmbeddingExtractor(FeatureExtractor):
         return self._feat_dim
 
     def extract(self, samples: np.ndarray, sampling_rate: int) -> np.ndarray:
-        """
         输入是原始音频波形，输出是 speaker embedding。
 
         :param samples: numpy ndarray，形状为 (1, num_samples) 或 (num_samples,)
         :param sampling_rate: 音频采样率.
         :return: numpy.ndarray，形状为 (1, feature_dim)，代表这个 cut 的 embedding
-        """
+
 
         self._initialize_model_if_needed()
         samples = torch.tensor(samples, dtype=torch.float32)
@@ -126,7 +120,7 @@ class SpeakerEmbeddingExtractor(FeatureExtractor):
 
         # embedding 的形状是 (1, 1, 192)，我们需要 (1, 192)
         return embedding.squeeze(1).cpu().numpy()
-
+"""
 
 
 

@@ -7,7 +7,7 @@ from tqdm import tqdm
 from lhotse import CutSet
 from lhotse.recipes import prepare_commonvoice
 import logging
-from util import *
+from util import get_sentence_embeddings
 import numpy as np
 import faiss, gc
 from lhotse_util import from_strategy_to_cuts
@@ -232,7 +232,7 @@ def save_audios_from_cutset(cutset, out_dir, num_jobs=None):
             pass
 
 
-COMMONVOICE_LANGS = "ko  de  es  fr  id  it  th  tr  vi  zh-CN".split()
+COMMONVOICE_LANGS = "tr  de  es  fr  id  it  th  zh-CN".split()
 IN_DIR = "../datasets/LongSpeechSource/cv-corpus-22.0-2025-06-20"
 OUT_DIR = '/home/yangrenyi.yry/LongSpeech_p3'
 

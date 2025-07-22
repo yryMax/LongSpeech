@@ -1,18 +1,19 @@
 from deepmultilingualpunctuation import PunctuationModel
 from sentence_transformers import SentenceTransformer
-from speechbrain.pretrained import EncoderClassifier
+#from speechbrain.pretrained import EncoderClassifier
 import torch
 import torchaudio
 import numpy as np
 
-punct = PunctuationModel()
+# punct = PunctuationModel()
 text_embedding = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
+"""
 speaker_embedding = EncoderClassifier.from_hparams(
         source="speechbrain/spkrec-ecapa-voxceleb",
         run_opts={"device": "cpu"}
     )
 speaker_embedding.eval()
-
+"""
 def restore_punctuation(text: str) -> str:
     """
     标点恢复
