@@ -5,7 +5,7 @@ import torch
 import torchaudio
 import numpy as np
 
-# punct = PunctuationModel()
+punct = PunctuationModel()
 text_embedding = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
 """
 speaker_embedding = EncoderClassifier.from_hparams(
