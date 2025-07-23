@@ -106,7 +106,7 @@ def prepare_aishell2(
         output_dir.mkdir(parents=True, exist_ok=True)
 
     manifests = defaultdict(dict)
-    dataset_parts = ["train", "dev", "test"]
+    dataset_parts = ["train"]
     for part in tqdm(
         dataset_parts,
         desc="Process aishell2 audio, it takes about 55  minutes using 40 cpu jobs.",
@@ -115,8 +115,8 @@ def prepare_aishell2(
         # Generate a mapping: utt_id -> (audio_path, audio_info, speaker, text)
 
         if part == "train":
-            transcript_path = corpus_dir / "AISHELL-2" / "iOS" / "data" / "trans.txt"
-            wav_path = corpus_dir / "AISHELL-2" / "iOS" / "data" / "wav"
+            transcript_path = corpus_dir / "data" / "trans.txt"
+            wav_path = corpus_dir /  "data" / "wav"
         else:
             # using dev_ios, test_ios
             transcript_path = corpus_dir / "AISHELL-2" / "iOS" / f"{part}" / "trans.txt"
