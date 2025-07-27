@@ -5,6 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="602cfb8d-0cbe-47b8-9945-3a1bd48e65fa" name="Changes" comment="trash">
+      <change afterPath="$PROJECT_DIR$/illustration.ipynb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/prcessing_aishell2.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/prcessing_aishell2.ipynb" afterDir="false" />
     </list>
@@ -16,8 +17,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Jupyter Notebook" />
         <option value="Python Script" />
+        <option value="Jupyter Notebook" />
       </list>
     </option>
   </component>
@@ -186,7 +187,9 @@
       <workItem from="1753156244351" duration="2831000" />
       <workItem from="1753228826356" duration="5325000" />
       <workItem from="1753237729246" duration="10997000" />
-      <workItem from="1753261708414" duration="7048000" />
+      <workItem from="1753261708414" duration="7945000" />
+      <workItem from="1753609809267" duration="476000" />
+      <workItem from="1753615151038" duration="2093000" />
     </task>
     <task id="LOCAL-00001" summary="trash">
       <option name="closed" value="true" />
