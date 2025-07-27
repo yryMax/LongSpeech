@@ -233,8 +233,8 @@ def save_audios_from_cutset(cutset, out_dir, num_jobs=None):
 
 
 COMMONVOICE_LANGS = "tr  de  es  fr  id  it  th  zh-CN".split()
-IN_DIR = "../datasets/LongSpeechSource/cv-corpus-22.0-2025-06-20"
-OUT_DIR = '/home/yangrenyi.yry/LongSpeech_p3'
+IN_DIR = "../datasets/LongSpeechSource/iOS"
+OUT_DIR = '../datasets/LongSpeech_p2'
 
 if __name__ == '__main__':
 
