@@ -5,9 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="602cfb8d-0cbe-47b8-9945-3a1bd48e65fa" name="Changes" comment="trash">
-      <change afterPath="$PROJECT_DIR$/illustration.ipynb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/qa.ipynb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/prcessing_aishell2.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/prcessing_aishell2.ipynb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -189,7 +188,8 @@
       <workItem from="1753237729246" duration="10997000" />
       <workItem from="1753261708414" duration="7945000" />
       <workItem from="1753609809267" duration="476000" />
-      <workItem from="1753615151038" duration="2093000" />
+      <workItem from="1753615151038" duration="3805000" />
+      <workItem from="1753668099321" duration="1429000" />
     </task>
     <task id="LOCAL-00001" summary="trash">
       <option name="closed" value="true" />
@@ -281,6 +281,11 @@
           <url>file://$PROJECT_DIR$/prcessing_aishell2.ipynb</url>
           <line>98</line>
           <option name="timeStamp" value="10" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="jupyter-line">
+          <url>file://$PROJECT_DIR$/illustration.ipynb</url>
+          <line>57</line>
+          <option name="timeStamp" value="13" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/lhotse_util.py</url>
